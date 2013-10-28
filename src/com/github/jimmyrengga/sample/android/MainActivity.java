@@ -3,6 +3,9 @@ package com.github.jimmyrengga.sample.android;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -30,6 +33,16 @@ public class MainActivity extends Activity {
         for(User user: list) {
             insertData(user);
         }
+
+        final AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+
+        String[] users = sqLiteUserAssistant.getAllUsers();
+        for(int i=0; i<users.length; i++) {
+            Log.i(this.toString(), users[i]);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, users);
+        textView.setAdapter(adapter);
     }
 
     public List<User> getUser() {
