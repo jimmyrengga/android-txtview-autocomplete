@@ -12,35 +12,57 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
+
+    private SQLiteUserAssistant sqLiteUserAssistant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sqLiteUserAssistant = new SQLiteUserAssistant(MainActivity.this);
+        sqLiteUserAssistant.openDB();
+
+        List<User> list = getUser();
+        for(User user: list) {
+            openDBandInsertData(user);
+        }
+
+        
+
     }
 
-    
+    public List<User> getUser() {
+        List<User> listUser = new ArrayList<User>();
 
-    public void getdata(View v) {
         try {
             JSONArray jsonArray = new JSONArray(loadJSONFromAsset());
             if(jsonArray.length() < 0) {
                 Toast.makeText(getApplicationContext(), "nol besar", Toast.LENGTH_LONG).show();
+                return new ArrayList<User>();
             } else {
                 Toast.makeText(getApplicationContext(), "jumlah data : " + jsonArray.length(), Toast.LENGTH_LONG).show();
 
                 for (int i = 0; i<jsonArray.length(); i++) {
                     JSONObject jso = jsonArray.getJSONObject(i);
-
                     Log.i(MainActivity.class.getName(), jso.getString("username"));
+
+                    User u = new User();
+                    u.setUsername(jso.getString("username"));
+                    u.setFullname(jso.getString("fullname"));
+                    listUser.add(u);
                 }
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        return listUser;
     }
 
     public String loadJSONFromAsset() {
@@ -64,6 +86,10 @@ public class MainActivity extends Activity {
         }
         return json;
 
+    }
+
+    private void openDBandInsertData(User user) {
+        sqLiteUserAssistant.insertUser(user.getUsername(), user.getFullname());
     }
 
 }
