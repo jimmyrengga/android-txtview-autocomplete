@@ -3,7 +3,6 @@ package com.github.jimmyrengga.sample.android;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,11 +28,8 @@ public class MainActivity extends Activity {
 
         List<User> list = getUser();
         for(User user: list) {
-            openDBandInsertData(user);
+            insertData(user);
         }
-
-        
-
     }
 
     public List<User> getUser() {
@@ -88,7 +84,7 @@ public class MainActivity extends Activity {
 
     }
 
-    private void openDBandInsertData(User user) {
+    private void insertData(User user) {
         sqLiteUserAssistant.insertUser(user.getUsername(), user.getFullname());
     }
 
