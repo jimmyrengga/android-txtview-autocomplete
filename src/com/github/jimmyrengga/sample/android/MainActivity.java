@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -21,12 +22,15 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private SQLiteUserAssistant sqLiteUserAssistant;
+    TextView tv1, tv2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tv1 = (TextView) findViewById(R.id.textView);
+        tv2 = (TextView) findViewById(R.id.textView2);
         sqLiteUserAssistant = new SQLiteUserAssistant(MainActivity.this);
         sqLiteUserAssistant.openDB();
 
@@ -48,7 +52,8 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 User selected = (User) adapterView.getAdapter().getItem(i);
-                Log.i(this.toString(), "Username selected : ")
+                tv1.setText(selected.getUsername());
+                tv2.setText(selected.getFullname());
             }
         });
     }

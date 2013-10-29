@@ -69,7 +69,7 @@ public class SQLiteUserAssistant extends SQLiteOpenHelper {
         contentValues.put(DB_COLUMN_1_NAME, username);
         contentValues.put(DB_COLUMN_2_NAME, fullname);
         Log.i(this.toString() + " - insertUser", "Inserting: " + username + ", " + fullname);
-        return this.sqliteDBInstance.insert(DB_TABLE_NAME, null, contentValues);
+        return this.sqliteDBInstance.insertWithOnConflict(DB_TABLE_NAME, null, contentValues,SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     public boolean removeUser(String username)
