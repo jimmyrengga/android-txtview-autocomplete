@@ -23,4 +23,9 @@ public class User {
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
+
+    @Override
+    public String toString() {
+        return username + " - " + fullname;
+    }
 }

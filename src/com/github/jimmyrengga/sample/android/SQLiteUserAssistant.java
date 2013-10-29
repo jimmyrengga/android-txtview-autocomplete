@@ -6,6 +6,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by jimmy on 10/28/13.
  */
@@ -38,6 +41,7 @@ public class SQLiteUserAssistant extends SQLiteOpenHelper {
     {
         Log.i("onCreate", "Creating the database...");
         sqliteDBInstance.execSQL(DB_CREATE_SCRIPT);
+        //check if db exist
     }
 
     public void openDB() throws SQLException
@@ -85,25 +89,29 @@ public class SQLiteUserAssistant extends SQLiteOpenHelper {
         return this.sqliteDBInstance.update(DB_TABLE_NAME, contentValues, "username='" + oldUsername + "'", null);
     }
 
-    public String[] getAllUsers()
+    public List<User> getAllUsers()
     {
-        Cursor cursor = this.sqliteDBInstance.query(DB_TABLE_NAME, new String[] {DB_COLUMN_1_NAME}, null, null, null, null, null);
-
+        Cursor cursor = this.sqliteDBInstance.query(DB_TABLE_NAME, new String[] {DB_COLUMN_1_NAME, DB_COLUMN_2_NAME}, null, null, null, null, null);
+        List<User> users = new ArrayList<User>();
         if(cursor.getCount() >0)
         {
-            String[] str = new String[cursor.getCount()];
-            int i = 0;
-
+//            String[] str = new String[cursor.getCount()];
+//            int i = 0;
             while (cursor.moveToNext())
             {
-                str[i] = cursor.getString(cursor.getColumnIndex(DB_COLUMN_1_NAME));
-                i++;
+//                str[i] = cursor.getString(cursor.getColumnIndex(DB_COLUMN_1_NAME));
+//                i++;
+                User u = new User();
+                u.setUsername(cursor.getString(cursor.getColumnIndex(DB_COLUMN_1_NAME)));
+                u.setFullname(cursor.getString(cursor.getColumnIndex(DB_COLUMN_2_NAME)));
+
+                users.add(u);
             }
-            return str;
+            return users;
         }
         else
         {
-            return new String[] {};
+            return new ArrayList<User>();
         }
     }
 

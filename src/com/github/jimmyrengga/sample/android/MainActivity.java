@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -36,13 +37,20 @@ public class MainActivity extends Activity {
 
         final AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
 
-        String[] users = sqLiteUserAssistant.getAllUsers();
-        for(int i=0; i<users.length; i++) {
-            Log.i(this.toString(), users[i]);
+        List<User> users = sqLiteUserAssistant.getAllUsers();
+        for(User u: users){
+            Log.i(this.toString(), u.getUsername());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, users);
+        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, R.layout.list_item, users);
         textView.setAdapter(adapter);
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                User selected = (User) adapterView.getAdapter().getItem(i);
+                Log.i(this.toString(), "Username selected : ")
+            }
+        });
     }
 
     public List<User> getUser() {
